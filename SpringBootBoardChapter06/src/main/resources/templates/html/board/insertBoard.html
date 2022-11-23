@@ -1,0 +1,82 @@
+<!-- <%@page contentType="text/html; charset=UTF-8"%> -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>새글등록</title>
+</head>
+<body>
+	<div id="wrapper">
+
+		<div id="title">
+			<h3>새글 등록하기</h3>
+		</div>
+		<div id="content" class="insertBoard">
+			<form action="/insertBoardProc" method="post">
+				<table border="1" cellpadding="0" cellspacing="0">
+					<colgroup>
+					<col width="40%">
+					<col width="25%">
+					<col width="30%">
+					<col width="5%">
+				</colgroup>
+					<tr>
+						<td bgcolor="orange">제목</td>
+						<td class="alingLeft"><input type="text" name="title" /></td>
+					</tr>
+					<tr>
+						<td bgcolor="orange">작성자</td>
+						<td class="alignLeft"><input type="text" readonly="readonly" name="writer" size="10" value="${session.member.writer}"/></td>
+					</tr>
+					<tr>
+						<td bgcolor="orange">내용</td>
+						<td class="alignLeft"><textarea name="content" cols="40" rows="10"></textarea></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="alignCenter">
+						<input type="submit" value=" 새글 등록"/>
+					                  <input type="button" onclick="event.preventDefault(); location.href='/board/listBoard';" value="목록 으로" />
+							</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
+
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>새 글 등록</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body th:align="center">
+<h1>게시글 등록</h1>
+<form th:action="insertBoardProc" method="post"><!-- 여기 액션은 컨트롤러의 액션으로 가는데 컨트롤러 리퀘스트 매핑된건 기본으로 깔고간다. ' /board/ '를 깔고감;    -->
+<table th:align="center" border="1" th:cellpadding="0" th:cellspacing="0">				
+	<tr>
+		<td bgcolor="orange" th:text="제목" width="80"></td>
+		<td><input name="title" type="text" size="50"></td>
+	</tr>
+	<tr>
+		<td bgcolor="orange" th:text="작성자"></td>
+		<td><input name="writer" size="10" readonly="readonly" th:value="${session['member'].name}"></td>
+	</tr>
+	<tr>
+		<td bgcolor="orange" th:text="내용">
+		<td><textarea name="content" cols="50" rows="10"></textarea></td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+			<input type="submit" value="게시글 등록">
+		</td>
+	</tr>
+</table>
+</form>	
+<a th:href="@{/board/listBoard}">글목록</a>
+</body>
+</html>
+

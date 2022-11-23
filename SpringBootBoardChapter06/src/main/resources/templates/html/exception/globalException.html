@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div class="wrapper">
+		<h1>Global Exception 발발</h1>
+		<p>
+			<a th:href="@{/}"> 메인으로</a>
+		</p>
+		<p>
+			예외 Message : <span th:text="${exception.message}" />
+		</p>
+		
+		<ul th:each="trace : ${exception.stackTrace}">
+			<li th:text="${trace}"></li>
+		
+		</ul>		
+		
+	</div>
+
+
+</body>
+</html>
