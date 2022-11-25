@@ -1,4 +1,4 @@
-package kr.kwangan2.board.controller;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     package kr.kwangan2.board.controller;
 
 import java.util.ArrayList;
 import java.util.List;
