@@ -14,8 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import kr.bbaa.board.entity.Board;
+import kr.bbaa.board.reply.entity.Reply;
 import kr.bbaa.member.domain.Role;
-import kr.bbaa.reply.entity.Reply;
 import lombok.Data;
 import lombok.ToString;
 
@@ -51,7 +51,7 @@ public class Member implements Serializable {
 	@OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
 	private List<Board> boardList = new ArrayList<Board>();
 	
-	@OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "member", fetch = FetchType.EAGER)//eager타입을 ㅊ2개 쓸순 없어서 하나 레이지로해줌
 	private List<Reply> replyList = new ArrayList<Reply>();
 	
 	

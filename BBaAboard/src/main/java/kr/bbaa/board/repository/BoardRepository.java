@@ -7,7 +7,7 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 import kr.bbaa.board.entity.Board;
-import kr.bbaa.reply.entity.Reply;
+import kr.bbaa.board.reply.entity.Reply;
 
 public interface BoardRepository extends CrudRepository<Board, Long>
 	, QuerydslPredicateExecutor<Board>{

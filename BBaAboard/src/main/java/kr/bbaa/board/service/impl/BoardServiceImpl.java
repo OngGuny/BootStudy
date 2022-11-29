@@ -1,7 +1,6 @@
 package kr.bbaa.board.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,10 +14,10 @@ import com.querydsl.core.BooleanBuilder;
 import kr.bbaa.board.domain.Search;
 import kr.bbaa.board.entity.Board;
 import kr.bbaa.board.entity.QBoard;
+import kr.bbaa.board.reply.entity.Reply;
+import kr.bbaa.board.reply.repository.ReplyRepository;
 import kr.bbaa.board.repository.BoardRepository;
 import kr.bbaa.board.service.BoardService;
-import kr.bbaa.reply.entity.Reply;
-import kr.bbaa.reply.repository.ReplyRepository;
 
 @Service
 public class BoardServiceImpl implements BoardService { // 아니 서비스 구현해야지 ㅋㅋㅋㅋ 안하니까 정성스럽게 노 빈 에러 뜸 ;
@@ -75,6 +74,7 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 
 	@Override
 	public void insertReply(Reply reply) {
+		//boardRepo.findById(null)
 		replyRepo.save(reply);
 	}
 
@@ -88,6 +88,7 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 	public void updateReply(Reply reply) {
 		Reply r = replyRepo.findById(reply.getRid()).get();
 		r.setComments(reply.getComments());
+		r.setRegDate(new Date());
 		replyRepo.save(r);
 	}
 
@@ -97,5 +98,16 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 		return replyRepo.findById(reply.getRid()).get();
 
 	}
+	
+	@Override
+	public void updateBoardReplyCnt(Board board) {
+		Board findBoard = boardRepo.findById(board.getSeq()).get();
+		Long replyCnt = (long) findBoard.getReplyList().size();
+		
+		findBoard.setReplyCnt(replyCnt);
+		
+		boardRepo.save(findBoard);
+	}
 
+	
 }// class

@@ -30,7 +30,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public final StringPath password = createString("password");
 
-    public final ListPath<kr.bbaa.reply.entity.Reply, kr.bbaa.reply.entity.QReply> replyList = this.<kr.bbaa.reply.entity.Reply, kr.bbaa.reply.entity.QReply>createList("replyList", kr.bbaa.reply.entity.Reply.class, kr.bbaa.reply.entity.QReply.class, PathInits.DIRECT2);
+    public final ListPath<kr.bbaa.board.reply.entity.Reply, kr.bbaa.board.reply.entity.QReply> replyList = this.<kr.bbaa.board.reply.entity.Reply, kr.bbaa.board.reply.entity.QReply>createList("replyList", kr.bbaa.board.reply.entity.Reply.class, kr.bbaa.board.reply.entity.QReply.class, PathInits.DIRECT2);
 
     public final EnumPath<kr.bbaa.member.domain.Role> role = createEnum("role", kr.bbaa.member.domain.Role.class);
 

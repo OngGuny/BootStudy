@@ -19,8 +19,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import kr.bbaa.board.reply.entity.Reply;
+import kr.bbaa.board.upload.entity.AttachFile;
 import kr.bbaa.member.entity.Member;
-import kr.bbaa.reply.entity.Reply;
 import lombok.Data;
 import lombok.ToString;
 
@@ -30,7 +31,7 @@ import lombok.ToString;
  */
 @Entity(name = "tbl_board")
 @Data
-@ToString(exclude = {"member" , "replyList"})
+@ToString(exclude = {"member" , "replyList" , "attachList"})
 @Table(name = "tbl_board")
 @SequenceGenerator(
 		name = "board_seq",
@@ -77,5 +78,8 @@ public class Board implements Serializable {
 	
 	@OneToMany(mappedBy = "board" , fetch = FetchType.EAGER)
 	private List<Reply> replyList = new ArrayList<Reply>();
+	
+	@OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+	private List<AttachFile> attachList = new ArrayList<AttachFile>();
 	
 }//class

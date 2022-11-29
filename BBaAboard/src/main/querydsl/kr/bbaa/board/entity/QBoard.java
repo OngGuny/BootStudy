@@ -22,6 +22,8 @@ public class QBoard extends EntityPathBase<Board> {
 
     public static final QBoard board = new QBoard("board");
 
+    public final ListPath<kr.bbaa.board.upload.entity.AttachFile, kr.bbaa.board.upload.entity.QAttachFile> attachList = this.<kr.bbaa.board.upload.entity.AttachFile, kr.bbaa.board.upload.entity.QAttachFile>createList("attachList", kr.bbaa.board.upload.entity.AttachFile.class, kr.bbaa.board.upload.entity.QAttachFile.class, PathInits.DIRECT2);
+
     public final StringPath classification = createString("classification");
 
     public final NumberPath<Long> cnt = createNumber("cnt", Long.class);
@@ -34,7 +36,7 @@ public class QBoard extends EntityPathBase<Board> {
 
     public final NumberPath<Long> replyCnt = createNumber("replyCnt", Long.class);
 
-    public final ListPath<kr.bbaa.reply.entity.Reply, kr.bbaa.reply.entity.QReply> replyList = this.<kr.bbaa.reply.entity.Reply, kr.bbaa.reply.entity.QReply>createList("replyList", kr.bbaa.reply.entity.Reply.class, kr.bbaa.reply.entity.QReply.class, PathInits.DIRECT2);
+    public final ListPath<kr.bbaa.board.reply.entity.Reply, kr.bbaa.board.reply.entity.QReply> replyList = this.<kr.bbaa.board.reply.entity.Reply, kr.bbaa.board.reply.entity.QReply>createList("replyList", kr.bbaa.board.reply.entity.Reply.class, kr.bbaa.board.reply.entity.QReply.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> seq = createNumber("seq", Long.class);
 

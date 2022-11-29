@@ -1,4 +1,4 @@
-package kr.bbaa.reply.entity;
+package kr.bbaa.board.reply.entity;
 
 import java.io.Serializable;
 import java.util.Date;

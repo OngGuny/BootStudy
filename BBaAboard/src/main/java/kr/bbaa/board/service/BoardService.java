@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 
 import kr.bbaa.board.domain.Search;
 import kr.bbaa.board.entity.Board;
-import kr.bbaa.reply.entity.Reply;
+import kr.bbaa.board.reply.entity.Reply;
 
 public interface BoardService {
 
@@ -27,4 +27,6 @@ public interface BoardService {
 	public void updateReply(Reply reply);
 	
 	public Reply getReply(Reply reply);
+	
+	public void updateBoardReplyCnt(Board board);
 }

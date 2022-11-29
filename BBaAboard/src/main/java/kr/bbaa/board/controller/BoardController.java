@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import kr.bbaa.board.domain.Search;
 import kr.bbaa.board.entity.Board;
+import kr.bbaa.board.reply.entity.Reply;
+import kr.bbaa.board.reply.repository.ReplyRepository;
 import kr.bbaa.board.security.domain.SecurityUser;
 import kr.bbaa.board.service.BoardService;
-import kr.bbaa.reply.entity.Reply;
-import kr.bbaa.reply.repository.ReplyRepository;
 import lombok.extern.log4j.Log4j2;
 
 @Controller
@@ -25,15 +25,12 @@ import lombok.extern.log4j.Log4j2;
 public class BoardController {
 	@Autowired
 	private BoardService boardService;
-	
 
 	@GetMapping("/insertBoard")
 	public String insertBoardView() {
 		return "board/insertBoard";
 	}
 
-	
-	
 	@PostMapping("/insertBoard")
 	public String insertBoard(Board board, @AuthenticationPrincipal SecurityUser principal) {
 		board.setMember(principal.getMember());
@@ -42,7 +39,7 @@ public class BoardController {
 	}
 
 	@PostMapping("/updateBoard")
-	public String updateBoard(Board board ,@AuthenticationPrincipal SecurityUser principal) {
+	public String updateBoard(Board board, @AuthenticationPrincipal SecurityUser principal) {
 		if (board.getMember().getName() != principal.getUsername()) {
 			log.info("WrongWriter....");
 			return "redirect:getBoard";
@@ -69,23 +66,49 @@ public class BoardController {
 	}
 
 	@GetMapping("/getBoard")
-	public String getBoard(Board board, Model model,@AuthenticationPrincipal SecurityUser principal) {
+	public String getBoard(Board board, Model model, @AuthenticationPrincipal SecurityUser principal) {
 		Board b = boardService.getBoard(board);
 		b.setCnt(b.getCnt() + 1);
 		boardService.updateBoard(b);
-		
+
 		model.addAttribute("board", b);
 		model.addAttribute("visitor", principal.getMember());
 		return "board/getBoard";
 	}
-	
-	@PostMapping("/insertReply")
-	public String insertReply(Board board,Reply reply,@AuthenticationPrincipal SecurityUser principal) {
+
+	@PostMapping("/insertReply") // board.seq 만 던짐
+	public String insertReply(Board board, Reply reply, @AuthenticationPrincipal SecurityUser principal) {
 		reply.setBoard(board);
 		reply.setMember(principal.getMember());
 		boardService.insertReply(reply);
-		
-		return "redirect:getBoard?seq="+board.getSeq();
+
+		boardService.updateBoardReplyCnt(board);// 댓글 쓸때 한번만 업데이트하도록함.
+
+		return "redirect:getBoard?seq=" + board.getSeq();
 	}
-	
-}//class
+
+	@RequestMapping("/deleteReply")
+	public String deleteReply(Reply reply) {
+		Long seq = boardService.getReply(reply).getBoard().getSeq();
+		boardService.deleteReply(reply);
+
+		return "redirect:getBoard?seq=" + seq;
+	}
+
+	@RequestMapping("/updateReply")			//rid 하나만 가짐
+	public String updateReply(Model model,Reply reply) {
+		Reply rep = boardService.getReply(reply);
+		model.addAttribute("reply", rep);
+		
+		return "board/updateReply";
+	}
+
+	@RequestMapping("/updateReplyProc") // rid, 수정된 contents 받음 
+	public String updateReplyProc(Reply reply) {
+		Long seq = boardService.getReply(reply).getBoard().getSeq();
+		boardService.updateReply(reply);
+
+		return "redirect:getBoard?seq="+seq;
+	}
+
+}// class

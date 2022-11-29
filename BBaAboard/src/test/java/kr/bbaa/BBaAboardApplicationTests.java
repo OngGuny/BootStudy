@@ -2,6 +2,8 @@ package kr.bbaa;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +12,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import kr.bbaa.board.entity.Board;
+import kr.bbaa.board.reply.entity.Reply;
+import kr.bbaa.board.reply.repository.ReplyRepository;
 import kr.bbaa.board.repository.BoardRepository;
 import kr.bbaa.member.domain.Role;
 import kr.bbaa.member.entity.Member;
 import kr.bbaa.member.repository.MemberRepository;
-import kr.bbaa.reply.entity.Reply;
-import kr.bbaa.reply.repository.ReplyRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,15 +35,24 @@ class BBaAboardApplicationTests {
 	@Autowired
 	private ReplyRepository replyRepo;
 	
-//	@Test 
+	@Test 
 	public void memberAndBoard() { //첫번쨰 오류. 엔티티의 이름과 리파지토리의 @query 구문의 테이블명이 같야아 맵핑이 된다.
 		Member m = new Member();
-		m.setId("Admin");
-		m.setName("DIO");
+//		m.setId("Admin");
+//		m.setName("DIO");
+//		m.setPassword(encoder.encode("1"));
+//		m.setRole(Role.ROLE_ADMIN);
+//		m.setEnabled('y');
+//		memberRepo.save(m);
+		
+		m.setId("user");
+		m.setName("JOJO");
 		m.setPassword(encoder.encode("1"));
-		m.setRole(Role.ROLE_ADMIN);
+		m.setRole(Role.ROLE_MEMBER);
 		m.setEnabled('y');
 		memberRepo.save(m);
+		
+		
 		
 	}
 
@@ -110,7 +121,7 @@ class BBaAboardApplicationTests {
 		
 	}
 	
-	@Test
+	//@Test
 	public void replyTest() {
 		Reply list = replyRepo.findById(1L).get();
 		
