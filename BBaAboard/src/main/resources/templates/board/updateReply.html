@@ -9,13 +9,13 @@
 <body th:align="center">
 	<h1>댓글 수정</h1>
 	<form th:action="@{/board/updateReplyProc}" method="post">
-		<input type="hidden" th:value="${reply.rid}"/>
+		<input type="hidden" name="rid" th:value="${reply.rid}"/>
 		<table th:align="center" border="1" th:cellpadding="0"
 			th:cellspacing="0">
 			
 			<tr>
-				<td bgcolor="orange" th:text="'댓글 내용'">
-				<td><textarea name="comments" cols="50" rows="10" th:text="${}"></textarea></td>
+				<td bgcolor="orange" th:text="'작성자'">
+				<td><textarea  cols="50" rows="1" th:text="${reply.rid}"></textarea></td>
 			</tr>
 			<tr>
 				<td bgcolor="orange" th:text="'댓글 내용'">

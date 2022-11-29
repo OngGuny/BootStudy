@@ -18,7 +18,7 @@ public interface BoardService {
 
 	public Board getBoard(Board board);
 
-	public Page<Board> getBoardList(Search search);
+	public Page<Board> getBoardList(Search search, int page);
 	
 	public void insertReply(Reply reply);
 	
@@ -29,4 +29,8 @@ public interface BoardService {
 	public Reply getReply(Reply reply);
 	
 	public void updateBoardReplyCnt(Board board);
+
+	public Page<Reply> getReplyList(Board board, Search search, int page);
+
+	public List<Board> getExcelBoardList();
 }

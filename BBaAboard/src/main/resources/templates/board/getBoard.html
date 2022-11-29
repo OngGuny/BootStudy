@@ -37,6 +37,8 @@
 			<tr th:if="${board.member.name}==${visitor.name}">
 				<td colspan="2" align="center"><input type="submit"
 					value="게시글 수정"></td>
+			</tr>
+
 		</table>
 	</form>
 
@@ -50,22 +52,36 @@
 			<td bgcolor="green" th:text="${'수정'}"></td>
 			<td bgcolor="green" th:text="${'삭제'}"></td>
 		</tr>
-		<tr th:each="rep,state : ${board.replyList}">
+		<tr th:each="rep,state : ${replyList}">
 			<td th:text="${state.count}"></td>
 			<td th:text="${rep.member.name}" width="80"></td>
 			<td th:text="${rep.comments}"></td>
 			<td th:text="${#dates.format(rep.regDate, 'yyyy-MM-dd')}"></td>
-			<td bgcolor="green">
-	<a  th:if="${rep.member.name}==${visitor.name}" th:href="@{/board/updateReply(rid=${rep.rid})}" th:text="'댓글 수정'"></a>
+			<td bgcolor="green"><a
+				th:if="${rep.member.name}==${visitor.name}"
+				th:href="@{/board/updateReply(rid=${rep.rid})}" th:text="'댓글 수정'"></a>
 			</td>
-			<td bgcolor="green">
-	<a sec:authorize="hasRole('ROLE_ADMIN')"
-	  	th:if="${rep.member.name}!=${visitor.name}"
-		th:href="@{/board/deleteReply(rid=${rep.rid})}" th:text="'댓글 삭제(관리자)'"></a>
-	<a  th:if="${rep.member.name}==${visitor.name}" th:href="@{/board/deleteReply(rid=${rep.rid})}" th:text="'댓글 삭제'"></a>
+			<td bgcolor="green"><a sec:authorize="hasRole('ROLE_ADMIN')"
+				th:if="${rep.member.name}!=${visitor.name}"
+				th:href="@{/board/deleteReply(rid=${rep.rid})}"
+				th:text="'댓글 삭제(관리자)'"></a> <a
+				th:if="${rep.member.name}==${visitor.name}"
+				th:href="@{/board/deleteReply(rid=${rep.rid})}" th:text="'댓글 삭제'"></a>
 			</td>
 		</tr>
+		<tr>
+			<td
+				th:each="page : ${#numbers.sequence(0, searchResult.getReplyPage() - 1)}">
+				<a
+				th:href="@{/board/getBoard(
+				replyPage=${pageStat.index},
+				seq=${board.seq}
+				)
+				}"
+				th:text="${pageStat.index + 1}"> </a>
+			</td>
 
+		</tr>
 	</table>
 
 	<form th:action="@{/board/insertReply}" method="post">
@@ -82,16 +98,26 @@
 				<td readonly="readonly" name="name" th:text="${visitor.name}"></td>
 			</tr>
 			<tr>
-				<td colspan="2" align="center">
-				<input type="submit" value="댓글 등록"></td>
+				<td colspan="2" align="center"><input type="submit"
+					value="댓글 등록"></td>
 			</tr>
 		</table>
 	</form>
+	<div style="margin-top: 50px">
+      <form th:action="@{/mail}" method="post">
+         <input type="hidden" name="title" th:value="${board.title}" />
+         <input type="hidden" name="message" th:value="${board.content}" />
+         <input name="address" placeholder="전송 받을 이메일 주소" />&nbsp;
+         <button>발송</button>
+      </form>
+   </div>
+	
 	<a th:href="@{/board/insertBoard}">글등록</a>&nbsp;&nbsp;&nbsp;
 	<a sec:authorize="hasRole('ROLE_ADMIN')"
-	  	th:if="${board.member.name}!=${visitor.name}"
+		th:if="${board.member.name}!=${visitor.name}"
 		th:href="@{/board/deleteBoard(seq=${board.seq})}">글 삭제(관리자)</a>&nbsp;&nbsp;&nbsp;
-	<a th:if="${board.member.name}==${visitor.name}" th:href="@{/board/deleteBoard(seq=${board.seq})}">글 삭제</a>&nbsp;&nbsp;&nbsp;
+	<a th:if="${board.member.name}==${visitor.name}"
+		th:href="@{/board/deleteBoard(seq=${board.seq})}">글 삭제</a>&nbsp;&nbsp;&nbsp;
 	<a th:href="@{/board/getBoardList}">글목록</a>
 </body>
 </html>

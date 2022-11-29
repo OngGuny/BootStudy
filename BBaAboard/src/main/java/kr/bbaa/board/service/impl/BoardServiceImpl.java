@@ -1,6 +1,7 @@
 package kr.bbaa.board.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import com.querydsl.core.BooleanBuilder;
 import kr.bbaa.board.domain.Search;
 import kr.bbaa.board.entity.Board;
 import kr.bbaa.board.entity.QBoard;
+import kr.bbaa.board.reply.entity.QReply;
 import kr.bbaa.board.reply.entity.Reply;
 import kr.bbaa.board.reply.repository.ReplyRepository;
 import kr.bbaa.board.repository.BoardRepository;
@@ -53,28 +55,37 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 	}
 
 	@Override
-	public Page<Board> getBoardList(Search search) {
+	public Page<Board> getBoardList(Search search, int page) {
 		BooleanBuilder builder = new BooleanBuilder();
 
-		QBoard qboard = QBoard.board;
+		QBoard qBoard = QBoard.board;
 
 		if (search.getSearchCondition().equals("TITLE")) {
-			builder.and(qboard.title.like("%" + search.getSearchKeyword() + "%"));
+			builder.and(qBoard.title.like("%" + search.getSearchKeyword() + "%"));
+			builder.and(qBoard.classification.like("%" + search.getClassification() + "%")); // 보드, html에 classfication
 		} else if (search.getSearchCondition().equals("CONTENT")) {
-			builder.and(qboard.content.like("%" + search.getSearchKeyword() + "%"));
-		} else if (search.getSearchCondition().equals("CLASSIFICATION")) {
-			builder.and(qboard.classification.like("%" + search.getSearchKeyword() + "%")); // 보드, html에 classfication
-																							// 추가함
+			builder.and(qBoard.content.like("%" + search.getSearchKeyword() + "%"));
+			builder.and(qBoard.classification.like("%" + search.getClassification() + "%")); // 보드, html에 classfication
 		}
 
-		Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "seq");// 내림차순, 10개씩만 , 1페이지 부터
+		Pageable pageable = PageRequest.of(page, 10, Sort.Direction.DESC, "seq");// 내림차순, 10개씩만 , 1페이지 부터
 
 		return boardRepo.findAll(builder, pageable);
 	}
 
 	@Override
+	public Page<Reply> getReplyList(Board board, Search search, int page) {
+		Pageable pageable = PageRequest.of(page, 5, Sort.Direction.DESC, "rid");// 내림차순, 10개씩만 , 1페이지 부터
+		BooleanBuilder builder = new BooleanBuilder();
+		QReply qReply = QReply.reply;
+		builder.and(qReply.board.seq.eq(board.getSeq()));
+
+		return replyRepo.findAll(builder, pageable);
+	}
+
+	@Override
 	public void insertReply(Reply reply) {
-		//boardRepo.findById(null)
+		// boardRepo.findById(null)
 		replyRepo.save(reply);
 	}
 
@@ -98,16 +109,20 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 		return replyRepo.findById(reply.getRid()).get();
 
 	}
-	
+
 	@Override
 	public void updateBoardReplyCnt(Board board) {
 		Board findBoard = boardRepo.findById(board.getSeq()).get();
 		Long replyCnt = (long) findBoard.getReplyList().size();
-		
+
 		findBoard.setReplyCnt(replyCnt);
-		
+
 		boardRepo.save(findBoard);
 	}
 
-	
+	@Override
+	public List<Board> getExcelBoardList() {
+		return (List<Board>) boardRepo.findAll();
+	}
+
 }// class

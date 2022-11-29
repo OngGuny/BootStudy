@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import kr.bbaa.board.domain.Search;
 import kr.bbaa.board.entity.Board;
 import kr.bbaa.board.reply.entity.Reply;
-import kr.bbaa.board.reply.repository.ReplyRepository;
 import kr.bbaa.board.security.domain.SecurityUser;
 import kr.bbaa.board.service.BoardService;
 import lombok.extern.log4j.Log4j2;
@@ -60,19 +59,46 @@ public class BoardController {
 			search.setSearchCondition("TITLE");
 		if (search.getSearchKeyword() == null)
 			search.setSearchKeyword("");
-		Page<Board> boardList = boardService.getBoardList(search);
+		if (search.getClassification ()== null)
+			search.setClassification("");
+		int currntPage = search.getPage();
+		Page<Board> boardList = boardService.getBoardList(search ,currntPage);//이렇게 받아줘야 검색후 페이징 해도 검색조건이 유지됨
+		//첫번쨰 페이지일때 1만 뜨게 해주는 코드
+		if(boardList.getNumberOfElements()==0) {
+			search.setPage(1);
+		}else {
+			search.setPage(boardList.getTotalPages());
+		}
+		
 		model.addAttribute("boardList", boardList);
+		model.addAttribute("currentPage", currntPage);
+		model.addAttribute("searchResult", search);
 		return "board/getBoardList";
 	}
 
 	@GetMapping("/getBoard")
-	public String getBoard(Board board, Model model, @AuthenticationPrincipal SecurityUser principal) {
+	public String getBoard(Board board, Model model, Search search, @AuthenticationPrincipal SecurityUser principal) {
 		Board b = boardService.getBoard(board);
 		b.setCnt(b.getCnt() + 1);
-		boardService.updateBoard(b);
+		boardService.updateBoard(b);// 조회수
+		
+		int replyPage = search.getReplyPage();
+		
+		Page<Reply> replyList = boardService.getReplyList(b, search, replyPage);
+		//첫번쨰 페이지일때 1만 뜨게 해주는 코드
+		
+		if(replyList.getNumberOfElements()==0) {
+			search.setReplyPage(1);
+		}else {
+			search.setReplyPage(replyList.getTotalPages());
+		}
+
 
 		model.addAttribute("board", b);
 		model.addAttribute("visitor", principal.getMember());
+		model.addAttribute("replyList", replyList);
+		model.addAttribute("replyPage", replyPage);
+		model.addAttribute("searchResult", search);
 		return "board/getBoard";
 	}
 
@@ -103,8 +129,9 @@ public class BoardController {
 		return "board/updateReply";
 	}
 
-	@RequestMapping("/updateReplyProc") // rid, 수정된 contents 받음 
+	@PostMapping("/updateReplyProc") // rid, 수정된 contents 받음 
 	public String updateReplyProc(Reply reply) {
+		System.out.println("어디있니얘야.."+boardService.getReply(reply));
 		Long seq = boardService.getReply(reply).getBoard().getSeq();
 		boardService.updateReply(reply);
 
