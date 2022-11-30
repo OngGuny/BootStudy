@@ -6,6 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface ExcelService {
 
-	public void download(HttpServletResponse response) throws IOException;
+	public void downloadBoardList(HttpServletResponse response) throws IOException;
 
 }

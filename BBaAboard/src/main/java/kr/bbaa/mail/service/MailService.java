@@ -7,5 +7,4 @@ public interface MailService {
 
 	public abstract void sendAttachMail(MailDTO mailDTO);
 
-	public void mailSend(MailDTO mailDTO);
 }

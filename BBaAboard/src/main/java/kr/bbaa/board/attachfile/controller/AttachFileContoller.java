@@ -1,4 +1,4 @@
-package kr.bbaa.board.upload.controller;
+package kr.bbaa.board.attachfile.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import kr.bbaa.board.upload.entity.AttachFile;
+import kr.bbaa.board.attachfile.entity.AttachFile;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
 
@@ -68,7 +68,7 @@ public class AttachFileContoller {
 			log.info("-----------------------------------");
 
 			String originalFileName = multipartFile.getOriginalFilename();
-			attachFile.setFileName(originalFileName);
+			attachFile.setOrgNm(originalFileName);
 			log.info("upload file 원래 파일 이름:" + originalFileName);
 			log.info("upload file 크기:" + multipartFile.getSize());
 			log.info("upload file 파일 존재 여부:" + multipartFile.isEmpty());

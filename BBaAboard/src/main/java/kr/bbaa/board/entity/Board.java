@@ -19,8 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import kr.bbaa.board.attachfile.entity.AttachFile;
 import kr.bbaa.board.reply.entity.Reply;
-import kr.bbaa.board.upload.entity.AttachFile;
 import kr.bbaa.member.entity.Member;
 import lombok.Data;
 import lombok.ToString;
@@ -66,6 +66,8 @@ public class Board implements Serializable {
 	private Long cnt = 0L;
 	
 	private Long replyCnt = 0L;
+	
+	private Long fileId;
 	
 	@ManyToOne //캐스케이드 되는게없노 ;ㅣ
 	@JoinColumn(name = "MEMBER_ID", nullable = false, updatable = false)

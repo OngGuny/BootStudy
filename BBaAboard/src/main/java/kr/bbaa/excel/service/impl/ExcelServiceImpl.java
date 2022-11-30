@@ -22,7 +22,7 @@ public class ExcelServiceImpl implements ExcelService{
     @Autowired
     BoardService boardService;
     @Override
-    public void download(HttpServletResponse response) throws IOException {
+    public void downloadBoardList(HttpServletResponse response) throws IOException {
 
 
         Workbook wb = new XSSFWorkbook();
@@ -72,7 +72,7 @@ public class ExcelServiceImpl implements ExcelService{
             cell = row.createCell(cellNum++);
             cell.setCellValue(resultBoard.getMember().getName());
         }
-        
+         
         // Download	
         response.setContentType("ms-vnd/excel");
         response.setHeader("Content-Disposition", "attachment;filename=boardList.xlsx");
@@ -81,5 +81,9 @@ public class ExcelServiceImpl implements ExcelService{
         } finally {
             wb.close();
         }
-    }
-}
+ 
+    }//boardlist
+    
+    //멤버 목록 다운로드 메소드
+    
+}//classs

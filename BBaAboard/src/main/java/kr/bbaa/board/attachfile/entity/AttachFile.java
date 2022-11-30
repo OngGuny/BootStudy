@@ -1,14 +1,18 @@
-package kr.bbaa.board.upload.entity;
+package kr.bbaa.board.attachfile.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import kr.bbaa.board.entity.Board;
+import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
@@ -20,28 +24,45 @@ import lombok.ToString;
 @Data
 @Table(name = "tbl_attachfile")
 @ToString(exclude = "board")
+@SequenceGenerator(
+		name = "attachfile_seq",
+		sequenceName = "tbl_attachfile_seq",
+		initialValue = 1,
+		allocationSize = 1
+		)
 public class AttachFile implements Serializable {
-	
-	
+
 	private static final long serialVersionUID = 1L;
 
 	public AttachFile() {
 		super();
 	}
-   
+
 	@Id
-	private String fileName;
-	private String uploadPath;
-	private String uuid;
-	private String image;
-	
+	@GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "attachfile_seq")
+	private Long fileId;
+
+	private String orgNm;
+
+	private String savedNm;
+
+	private String savedPath;
+
 	@ManyToOne
 	@JoinColumn(name = "BOARD_SEQ")
 	private Board board;
-	
+
 	public void setBoard(Board board) {
 		this.board = board;
 		board.getAttachList().add(this);
 	}
-	
-}//class
+
+	@Builder
+	   public AttachFile(Long fileId, String orgNm, String savedNm, String savedPath) {
+	      this.fileId = fileId;
+	      this.orgNm = orgNm;
+	      this.savedNm = savedNm;
+	      this.savedPath = savedPath;
+	   }
+
+}// class

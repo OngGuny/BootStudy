@@ -41,6 +41,23 @@
 
 		</table>
 	</form>
+	<!-- 파일이미지 -->
+	<h3>이미지 출력</h3>
+      <div style="text-align: center;">
+      <div th:each="imageFile : ${all} " style="float:left -100px; margin: auto; display: inline-block; ">    
+         <img th:src=" |/board/images/${imageFile.fileId}|"  width="150" height="150" style="text-align: center;">
+         <p th:text="${imageFile.orgNm}"></p>
+      </div>   
+      </div>
+	<!-- 파일이미지 -->
+	<!-- 파일다운 -->
+	<div style="clear: both;">
+      <h4>파일 다운로드</h4>
+      <div th:each="file : ${all}">
+            <a th:href="|/board/attach/${file.fileId}|" th:text="${file.orgNm}"></a>
+      </div>
+      </div>
+	<!-- 파일다운 -->
 
 	<table th:align="center" border="1" th:cellpadding="0"
 		th:cellspacing="0">
@@ -107,7 +124,9 @@
       <form th:action="@{/mail}" method="post">
          <input type="hidden" name="title" th:value="${board.title}" />
          <input type="hidden" name="message" th:value="${board.content}" />
-         <input name="address" placeholder="전송 받을 이메일 주소" />&nbsp;
+         <input name="toAddress" placeholder="전송 받을 이메일 주소" />&nbsp;
+         <!-- 메일 디티오 이름 바꾸주고 여기 이름 은 그대로 둬서 오류뜸 -->
+         <!-- 여기에 첨부파일 넣어줘야함  -->
          <button>발송</button>
       </form>
    </div>

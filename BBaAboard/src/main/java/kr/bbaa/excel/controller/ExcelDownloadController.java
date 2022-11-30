@@ -20,6 +20,6 @@ public class ExcelDownloadController {
 
 	@GetMapping("excel/download")
 	public void download(HttpServletResponse response) throws IOException {
-		excelService.download(response);
+		excelService.downloadBoardList(response);
 	}
 }

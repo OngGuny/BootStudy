@@ -49,7 +49,12 @@ public class MailController {
 		model.addAttribute("currentPage", currntPage);
 		model.addAttribute("searchResult", search);
       
-      mailService.mailSend(mailDTO);
+		if(mailDTO.getFilePath()!=null) { //첨부파일이 있을 때
+			mailService.sendAttachMail(mailDTO);
+		}else {
+      mailService.sendSimpleMail(mailDTO);
+		}
+		
       return "/board/getBoardList";
    }
 

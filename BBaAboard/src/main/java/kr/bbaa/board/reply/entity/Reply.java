@@ -3,6 +3,7 @@ package kr.bbaa.board.reply.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -61,7 +62,7 @@ public class Reply implements Serializable {
 		member.getReplyList().add(this);
 	}
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "BOARD_SEQ")
 	private Board board;
 

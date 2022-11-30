@@ -22,7 +22,7 @@ public class QBoard extends EntityPathBase<Board> {
 
     public static final QBoard board = new QBoard("board");
 
-    public final ListPath<kr.bbaa.board.upload.entity.AttachFile, kr.bbaa.board.upload.entity.QAttachFile> attachList = this.<kr.bbaa.board.upload.entity.AttachFile, kr.bbaa.board.upload.entity.QAttachFile>createList("attachList", kr.bbaa.board.upload.entity.AttachFile.class, kr.bbaa.board.upload.entity.QAttachFile.class, PathInits.DIRECT2);
+    public final ListPath<kr.bbaa.board.attachfile.entity.AttachFile, kr.bbaa.board.attachfile.entity.QAttachFile> attachList = this.<kr.bbaa.board.attachfile.entity.AttachFile, kr.bbaa.board.attachfile.entity.QAttachFile>createList("attachList", kr.bbaa.board.attachfile.entity.AttachFile.class, kr.bbaa.board.attachfile.entity.QAttachFile.class, PathInits.DIRECT2);
 
     public final StringPath classification = createString("classification");
 
@@ -31,6 +31,8 @@ public class QBoard extends EntityPathBase<Board> {
     public final StringPath content = createString("content");
 
     public final DateTimePath<java.util.Date> createDate = createDateTime("createDate", java.util.Date.class);
+
+    public final NumberPath<Long> fileId = createNumber("fileId", Long.class);
 
     public final kr.bbaa.member.entity.QMember member;
 

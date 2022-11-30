@@ -4,6 +4,6 @@
 		<class>kr.bbaa.board.entity.Board</class>
 		<class>kr.bbaa.member.entity.Member</class>
 		<class>kr.bbaa.board.reply.entity.Reply</class>
-		<class>kr.bbaa.board.upload.entity.AttachFile</class>
+		<class>kr.bbaa.board.attachfile.entity.AttachFile</class>
 	</persistence-unit>
 </persistence>
