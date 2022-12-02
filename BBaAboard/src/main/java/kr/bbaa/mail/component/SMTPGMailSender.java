@@ -28,12 +28,6 @@ public class SMTPGMailSender {
 	// 첨부파일이 없는 메일 발송
 		public void sendSimpleMessage(SimpleMailMessage message) {
 
-//			SimpleMailMessage message = new SimpleMailMessage();
-System.out.println(message);
-//			message.setFrom(sender);
-//			message.setTo(mailDTO.getToAddress());
-//			message.setSubject(mailDTO.getTitle());
-//			message.setText(mailDTO.getMessage());
 			jMailSender.send(message);
 		}
 		
@@ -47,12 +41,17 @@ System.out.println(message);
 			helper.setTo(mailDTO.getToAddress());
 			helper.setSubject(mailDTO.getTitle());
 			helper.setText(mailDTO.getMessage());
-
-			File file = new File(mailDTO.getFilePath());
-			FileSystemResource fileSystemResource 
+			
+			//첨부파일 3개 넣음 
+			System.out.println(mailDTO.getAttachFileList()); 
+			for(String filePath : mailDTO.getAttachFileList()) {
+				File file = new File(filePath);
+				FileSystemResource fileSystemResource 
 				= new FileSystemResource(file);
-			helper.addAttachment(file.getName(), fileSystemResource);
-
+				helper.addAttachment(file.getName(), fileSystemResource);
+			}
+			
+			
 			jMailSender.send(message);
 		}
 	

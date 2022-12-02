@@ -62,7 +62,7 @@ public class Reply implements Serializable {
 		member.getReplyList().add(this);
 	}
 	
-	@ManyToOne(cascade = CascadeType.REMOVE)
+	@ManyToOne
 	@JoinColumn(name = "BOARD_SEQ")
 	private Board board;
 

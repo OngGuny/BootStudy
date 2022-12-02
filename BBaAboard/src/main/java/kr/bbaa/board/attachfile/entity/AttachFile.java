@@ -2,6 +2,7 @@ package kr.bbaa.board.attachfile.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,7 +47,7 @@ public class AttachFile implements Serializable {
 
 	private String savedNm;
 
-	private String savedPath;
+	private String savedPath; //얘만 넘겨주면 첨부됨 
 
 	@ManyToOne
 	@JoinColumn(name = "BOARD_SEQ")

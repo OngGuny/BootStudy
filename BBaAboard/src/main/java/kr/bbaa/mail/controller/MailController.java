@@ -48,14 +48,16 @@ public class MailController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("currentPage", currntPage);
 		model.addAttribute("searchResult", search);
-      
-		if(mailDTO.getFilePath()!=null) { //첨부파일이 있을 때
+		
+		if(mailDTO.getAttachFileList()!=null) { //첨부파일이 있을 때
+			System.out.println("첨부파일 있는 메일 발송");
 			mailService.sendAttachMail(mailDTO);
 		}else {
+			System.out.println("첨부파일 없는 메일 발송");
       mailService.sendSimpleMail(mailDTO);
 		}
 		
-      return "/board/getBoardList";
+      return "redirect:/board/getBoardList";
    }
 
 }

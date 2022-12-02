@@ -65,12 +65,15 @@ public class BoardController {
 		return "redirect:getBoardList";
 	}
 
-	@PostMapping("/updateBoard")
+	@PostMapping("/updateBoard")// 글 내용 보면서 수정가능. 근데 작성자가 아니면 수정불가.
 	public String updateBoard(Board board, @AuthenticationPrincipal SecurityUser principal) {
-		if (board.getMember().getName() != principal.getUsername()) {
+		Board upb = boardService.getBoard(board);
+		
+		if (!upb.getMember().getName().equals(principal.getMember().getName())) {
 			log.info("WrongWriter....");
 			return "redirect:getBoardList";
 		}
+		
 		boardService.updateBoard(board);
 		return "forward:getBoardList";
 	}
@@ -131,7 +134,7 @@ public class BoardController {
 		model.addAttribute("replyList", replyList);
 		model.addAttribute("replyPage", replyPage);
 		model.addAttribute("searchResult", search);
-	    model.addAttribute("all", files);
+	    model.addAttribute("fileList", files);
 
 		return "board/getBoard";
 	}
@@ -154,7 +157,8 @@ public class BoardController {
 
 		return "redirect:getBoard?seq=" + seq;
 	}
-
+	
+	
 	@RequestMapping("/updateReply")			//rid 하나만 가짐
 	public String updateReply(Model model,Reply reply) {
 		Reply rep = boardService.getReply(reply);
@@ -176,9 +180,9 @@ public class BoardController {
 	//첨부파일 보여주기. 
 	@GetMapping("/images/{fileId}")
 	   @ResponseBody
-	   public Resource imageView(@PathVariable("fileId") Long id, Model model) throws IOException {
+	   public Resource imageView(@PathVariable("fileId") Long fileid, Model model) throws IOException {
 
-	      AttachFile file = attachFileService.downloadImage(id);
+	      AttachFile file = attachFileService.downloadImage(fileid);
 	      String savePath = file.getSavedPath();
 	      System.out.println("================>>> file path" + file.getSavedPath());
 	      System.out.println("================>>> file path"
@@ -212,5 +216,16 @@ public class BoardController {
 
 	      return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition).body(resource);
 	   }
+	
+	@GetMapping("/images/deleteFile")
+	   public String deleteFile(AttachFile attachFiles, Board board) throws IOException {
+
+	      
+	       attachFileService.deleteFile(attachFiles.getFileId());
+	      
+	      return "redirect:/board/getBoard?seq="+board.getSeq();
+	   }
+	   
+	   
 	
 }// class

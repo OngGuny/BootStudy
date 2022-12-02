@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.querydsl.core.BooleanBuilder;
 
+import kr.bbaa.board.attachfile.repository.AttachFileRepository;
 import kr.bbaa.board.domain.Search;
 import kr.bbaa.board.entity.Board;
 import kr.bbaa.board.entity.QBoard;
@@ -29,7 +30,10 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 
 	@Autowired
 	private ReplyRepository replyRepo;
-
+	
+	@Autowired
+	private AttachFileRepository attachFileRepo;
+	
 	@Override
 	public void insertBoard(Board board) {
 		boardRepo.save(board);
@@ -37,8 +41,9 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 
 	@Override
 	public void updateBoard(Board board) {
+		System.out.println("업데이트 되나요?");
 		Board findBoard = boardRepo.findById(board.getSeq()).get();
-
+		System.out.println(findBoard);
 		findBoard.setTitle(board.getTitle());
 		findBoard.setContent(board.getContent());
 		boardRepo.save(findBoard);
@@ -46,7 +51,18 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 
 	@Override
 	public void deleteBoard(Board board) {
-		boardRepo.deleteById(board.getSeq());
+		Board b = boardRepo.findById(board.getSeq()).get();
+		System.out.println("여기엔 뭐가?" + b.getReplyList());
+
+//		if (!b.getReplyList().isEmpty()) {
+//			for (Reply rep : b.getReplyList()) {
+//				replyRepo.deleteById(rep.getRid());
+//			}
+//		}
+		
+		replyRepo.deleteBoard(b.getSeq());
+		attachFileRepo.deleteBoard(b.getSeq());
+		boardRepo.deleteById(b.getSeq());
 	}
 
 	@Override
@@ -57,7 +73,7 @@ public class BoardServiceImpl implements BoardService { // 아니 서비스 구�
 	@Override
 	public Page<Board> getBoardList(Search search, int page) {
 		BooleanBuilder builder = new BooleanBuilder();
-
+		System.out.println("카테고리어디?"+search.getClassification());
 		QBoard qBoard = QBoard.board;
 
 		if (search.getSearchCondition().equals("TITLE")) {

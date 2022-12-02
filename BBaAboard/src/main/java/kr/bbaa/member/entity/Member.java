@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -48,10 +49,10 @@ public class Member implements Serializable {
 	
 	private char enabled;
 	
-	@OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "member", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
 	private List<Board> boardList = new ArrayList<Board>();
 	
-	@OneToMany(mappedBy = "member", fetch = FetchType.EAGER)//eager타입을 ㅊ2개 쓸순 없어서 하나 레이지로해줌
+	@OneToMany(mappedBy = "member", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)//eager타입을 ㅊ2개 쓸순 없어서 하나 레이지로해줌
 	private List<Reply> replyList = new ArrayList<Reply>();
 	
 	

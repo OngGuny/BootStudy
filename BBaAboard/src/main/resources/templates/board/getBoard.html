@@ -10,6 +10,7 @@
 <body th:align="center">
 	<h1>게시글 상세</h1>
 	<form th:action="@{/board/updateBoard}" method="post">
+<!-- 	<input type="hidden" name="member" th:value="${board.member}" /> -->
 		<table th:align="center" border="1" th:cellpadding="0"
 			th:cellspacing="0">
 			<tr>
@@ -19,11 +20,11 @@
 			</tr>
 			<tr>
 				<td bgcolor="orange" th:text="작성자"></td>
-				<td><span name="name" th:text="${board.member.name}"></span></td>
+				<td><input readonly="readonly" name="name" th:value="${board.member.name}"></td>
 			</tr>
-			<tr>
+			<tr><!-- 작성자 아니면 수정 못하고 튕김 ㅅㄱ  -->
 				<td bgcolor="orange" th:text="내용">
-				<td><textarea name="content" th:text="${board.content}"
+				<td><textarea  name="content" th:text="${board.content}"
 						cols="40" rows="10"></textarea></td>
 			</tr>
 			<tr>
@@ -44,16 +45,19 @@
 	<!-- 파일이미지 -->
 	<h3>이미지 출력</h3>
       <div style="text-align: center;">
-      <div th:each="imageFile : ${all} " style="float:left -100px; margin: auto; display: inline-block; ">    
+      <div th:each="imageFile : ${fileList} " style="float:left -100px; margin: auto; display: inline-block; ">    
          <img th:src=" |/board/images/${imageFile.fileId}|"  width="150" height="150" style="text-align: center;">
          <p th:text="${imageFile.orgNm}"></p>
+         <a th:if="${board.member.name}==${visitor.name}" th:href="@{/board/images/deleteFile(fileId=${imageFile.fileId},seq=${board.seq})}" th:text="x"> </a>
+         <a sec:authorize="hasRole('ROLE_ADMIN')"
+		th:if="${board.member.name}!=${visitor.name}" th:href="@{/board/images/deleteFile(fileId=${imageFile.fileId},seq=${board.seq})}" th:text="${'Admin Delete'}"> </a>
       </div>   
       </div>
 	<!-- 파일이미지 -->
 	<!-- 파일다운 -->
 	<div style="clear: both;">
       <h4>파일 다운로드</h4>
-      <div th:each="file : ${all}">
+      <div th:each="file : ${fileList}">
             <a th:href="|/board/attach/${file.fileId}|" th:text="${file.orgNm}"></a>
       </div>
       </div>
@@ -81,7 +85,8 @@
 			<td bgcolor="green"><a sec:authorize="hasRole('ROLE_ADMIN')"
 				th:if="${rep.member.name}!=${visitor.name}"
 				th:href="@{/board/deleteReply(rid=${rep.rid})}"
-				th:text="'댓글 삭제(관리자)'"></a> <a
+				th:text="'댓글 삭제(관리자)'"></a> 
+				<a
 				th:if="${rep.member.name}==${visitor.name}"
 				th:href="@{/board/deleteReply(rid=${rep.rid})}" th:text="'댓글 삭제'"></a>
 			</td>
@@ -127,6 +132,7 @@
          <input name="toAddress" placeholder="전송 받을 이메일 주소" />&nbsp;
          <!-- 메일 디티오 이름 바꾸주고 여기 이름 은 그대로 둬서 오류뜸 -->
          <!-- 여기에 첨부파일 넣어줘야함  -->
+         <input type="hidden" th:each=" file : ${fileList}" name="attachFileList" th:value="${file.savedPath}"/>
          <button>발송</button>
       </form>
    </div>

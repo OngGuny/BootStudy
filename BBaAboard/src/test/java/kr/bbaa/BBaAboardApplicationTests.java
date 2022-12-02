@@ -19,7 +19,7 @@ import kr.bbaa.member.domain.Role;
 import kr.bbaa.member.entity.Member;
 import kr.bbaa.member.repository.MemberRepository;
 
-@RunWith(SpringRunner.class)
+//@RunWith(SpringRunner.class)
 @SpringBootTest
 class BBaAboardApplicationTests {
 

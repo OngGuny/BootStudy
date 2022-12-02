@@ -9,7 +9,7 @@
 	</parent>
 	<groupId>boot.board</groupId>
 	<artifactId>BBaAboard</artifactId>
-	<version>1.0</version>
+	<version>1.03</version>
 	<name>BBaAboard</name>
 	<description>Megaz Lecture</description>
 	<properties>

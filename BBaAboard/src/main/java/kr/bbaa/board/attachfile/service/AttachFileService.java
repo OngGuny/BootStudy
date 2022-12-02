@@ -19,4 +19,5 @@ public interface AttachFileService {
    
    public AttachFile downloadImage(@PathVariable("fileId") Long id);
    
+   public void deleteFile(Long seq);
 }
