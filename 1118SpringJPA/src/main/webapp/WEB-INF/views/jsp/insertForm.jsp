@@ -35,7 +35,7 @@
 
 		<c:choose>
 		
-		<c:when test="${sid != null }"> 
+		<c:when test="${param.sid != null }"> 
 		<input type="button" value="수정" onclick="document.forms['insertForm'].submit();"/>
 		</c:when>
 		

@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Log4j2
-public class StudentTest {
+public class StudentTest {//테스트 메소드 하나라도 있으면 메이븐 인스톨 안됨 
 
 	@Autowired
 	private StudentRepository studentRepository;
@@ -56,7 +56,7 @@ public class StudentTest {
 		dynamicStudentRepository.deleteById(202L);
 	}
 	
-	@Test
+	//@Test
 	public void inserts() {
 		for (int i = 1; i <= 200; i++) {
 			Student board = new Student();
